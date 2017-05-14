@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node index.js",
     "server": "supervisor .",
-    "client": "cd client; npm start",
     "test": "mocha test",
     "lint": "eslint .",
     "docker": "bash -c '(docker network inspect local 2>&1 > /dev/null || docker network create local) && docker-compose --file docker-compose.yml pull && docker-compose --file docker-compose.yml up -d --force-recreate'",
