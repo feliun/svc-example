@@ -1,9 +1,9 @@
 module.exports = {
-    logger: {
-        transport: null
-    },
-    postgres: {
-        database: 'postgres',
-        user: 'postgres'
-    }
-}
+  logger: {
+    transport: null
+  },
+  postgres: {
+    database: 'postgres',
+    user: 'postgres'
+  }
+};

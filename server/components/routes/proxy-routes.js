@@ -1,25 +1,23 @@
-const path = require('path')
-const express = require('systemic-express/express')
-const proxy = require('http-proxy-middleware')
+const path = require('path');
+const express = require('systemic-express/express');
+const proxy = require('http-proxy-middleware');
 
-module.exports = function() {
+module.exports = () => {
 
-    function start({ app, config, logger }, cb) {
+  const start = ({ app, config, logger }, cb) => {
 
-        app.use(express.static('./client/build'))
+    app.use(express.static('./client/build'));
 
-        Object.keys(config.routes).forEach(key => {
-            app.use(key, proxy({ target: config.routes[key], logProvider: () => logger, changeOrigin: true }))
-        })
+    Object.keys(config.routes).forEach(key => {
+      app.use(key, proxy({ target: config.routes[key], logProvider: () => logger, changeOrigin: true }));
+    });
 
-        app.get('*', (req, res)  => {
-          res.sendFile(path.join(process.cwd(), 'client', 'build', 'index.html'))
-        })
+    app.get('*', (req, res)  => {
+      res.sendFile(path.join(process.cwd(), 'client', 'build', 'index.html'));
+    });
 
-        cb()
-    }
+    cb();
+  };
 
-    return {
-        start: start
-    }
-}
+  return { start };
+};

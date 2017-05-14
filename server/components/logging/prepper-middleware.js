@@ -1,35 +1,30 @@
-const pick = require('lodash.pick')
-const onHeaders = require('on-headers')
+const pick = require('lodash.pick');
+const onHeaders = require('on-headers');
 
-module.exports = function(options = {}) {
+module.exports = ({ prepper } = {}) => {
+  const handlers = (prepper || require('prepper')).handlers;
 
-    const prepper = options.prepper || require('prepper')
-    const handlers = prepper.handlers
+  const start = ({ app }, cb) => {
+      app.use((req, res, next) => {
+        const logger = req.app.locals.logger.child({ handlers: [
+          new handlers.Tracer(),
+          new handlers.Merge(pick(req, ['url', 'method', 'headers', 'params']), { key: 'request' })
+        ]});
 
-    function start({ app }, cb) {
-        app.use((req, res, next) => {
+        onHeaders(res, () => {
+          const response = { response: { statusCode: res.statusCode, headers: res.headers } };
+          if (res.statusCode === 400) logger.error(req.url, response);
+          if (res.statusCode < 500) logger.info(req.url, response);
+          else logger.error(req.url, response);
+        });
 
-            const logger = req.app.locals.logger.child({ handlers: [
-                new handlers.Tracer(),
-                new handlers.Merge(pick(req, ['url', 'method', 'headers', 'params']), { key: 'request' })
-            ]})
+        res.locals.logger = logger;
 
-            onHeaders(res, () => {
-                const response = { response: { statusCode: res.statusCode, headers: res.headers } }
-                if (res.statusCode === 400) logger.error(req.url, response)
-                if (res.statusCode < 500) logger.info(req.url, response)
-                else logger.error(req.url, response)
-            })
+        next();
+      });
 
-            res.locals.logger = logger
+      cb();
+  };
 
-            next()
-        })
-
-        cb()
-    }
-
-    return {
-        start: start
-    }
-}
+  return { start };
+};

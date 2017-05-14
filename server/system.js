@@ -1,6 +1,4 @@
-const System = require('systemic')
-const path = require('path')
+const System = require('systemic');
+const { join } = require('path');
 
-module.exports = function() {
-    return new System({ name: 'svc-example' }).bootstrap(path.join(__dirname, 'components'))
-}
+module.exports = () => new System({ name: 'svc-example' }).bootstrap(join(__dirname, 'components'));
