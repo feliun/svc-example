@@ -5,9 +5,6 @@ An example service using
 * [confabulous](https://github.com/guidesmiths/confabulous)
 * [prepper](https://github.com/guidesmiths/prepper)
 * [systemic-express](https://github.com/guidesmiths/systemic-express)
-* [systemic-pg](https://github.com/guidesmiths/systemic-pg)
-* [marv](https://github.com/guidesmiths/marv)
-* [groundhog-day](https://github.com/guidesmiths/groundhog-day)
 
 ## Features
 * Environmental configuration
@@ -20,8 +17,6 @@ An example service using
 * The Dockerfile uses settings from .npmrc and .nvmrc
 * The docker build cache busts using package.json and npm-shrinkwrap.json so npm install only runs when necessary
 * Deployed artifact (a docker image) is traceable back to SCM commit via manifest.json, exposed via /__/manifest endpoint
-* Unit tests use stubbed clock for predictability
-* Unit tests use stubbed persistence store for speed
 
 ## Running locally
 ```

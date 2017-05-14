@@ -4,8 +4,8 @@
   "description": "An example microservice using systemic, confabulous and prepper",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently 'npm run server' 'npm run client'",
-    "server": "nodemon .",
+    "start": "node index.js",
+    "server": "supervisor .",
     "client": "cd client; npm start",
     "test": "mocha test",
     "lint": "eslint .",
