@@ -1,30 +1,27 @@
-const assert = require('chai').assert
-const system = require('../server/system')
-const request = require('request')
+const expect = require('expect.js');
+const system = require('../server/system');
+const supertest = require('supertest-as-promised');
 
 describe('Service Tests', () => {
+  let request;
+  let sys;
 
-    let config
-    let sys
+  before(done => {
+    sys = system().start((err, { app }) => {
+      if (err) return done(err);
+      request = supertest(Promise)(app);
+      done();
+    });
+  });
 
-    before(done => {
-        sys = system().start((err, components) => {
-            if (err) return done(err)
-            config = components.config
-            done()
-        })
-    })
+  after(done => sys.stop(done));
 
-    after(done => {
-        sys.stop(done)
-    })
-
-    it('should return manifest', done => {
-        request({ url: `http://${config.server.host}:${config.server.port}/__/manifest`, json: true }, (err, res, body) => {
-            assert.ifError(err)
-            assert.equal(res.statusCode, 200)
-            assert.equal(res.headers['content-type'], 'application/json; charset=utf-8')
-            done()
-        })
-    })
-})
+  it('should return manifest', () =>
+    request
+      .get('/__/manifest')
+      .expect(200)
+      .then((response) => {
+        expect(response.headers['content-type']).to.equal('application/json; charset=utf-8');
+      })
+  );
+});

@@ -1,12 +1,6 @@
-const system = require('../server/system')
-const clock = require('groundhog-day').fake
-const store = require('../server/components/app/memory-store')
+const system = require('../server/system');
 
-module.exports = function() {
-    return system()
-        .remove('migrator')
-        .remove('postgres')
-        .set('clock', clock())
-        .set('store', store()).dependsOn('clock')
-}
+module.exports = () => {
+  return system();
+};
 
