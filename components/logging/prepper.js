@@ -1,5 +1,5 @@
 const merge = require('lodash.merge');
-const get = require('lodash.get');
+const R = require('ramda');
 
 module.exports = ({ prepper, transport } = {}) => {
 
@@ -7,7 +7,7 @@ module.exports = ({ prepper, transport } = {}) => {
   const handlers = prepperFn.handlers;
 
   const start = ({ config, transports, pkg = { name: 'unknown' } }, cb) => {
-    const transportFn = transport || get(transports, config.transport);
+    const transportFn = transport || R.path([config.transport], transports);
     config = merge({ include: [], exclude: [] }, config);
 
     const logger = new prepperFn.Logger({ handlers: [
