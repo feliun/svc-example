@@ -1,6 +1,6 @@
 process.env.SERVICE_ENV = process.env.SERVICE_ENV || 'local';
 
-const system = require('./server/system');
+const system = require('./system');
 const runner = require('systemic-domain-runner');
 const bunyan = require('bunyan');
 const name = require('./package.json').name;

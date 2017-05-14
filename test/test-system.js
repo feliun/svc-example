@@ -1,4 +1,4 @@
-const system = require('../server/system');
+const system = require('../system');
 
 module.exports = () => {
   return system();
